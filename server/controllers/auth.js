@@ -1,3 +1,3 @@
-exports.register = (req, resp) => {
-
-}
+exports.register = (req, res) => {
+    console.log(req.body);
+};
