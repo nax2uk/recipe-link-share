@@ -6,6 +6,14 @@ require('dotenv').config();
 
 const app = express();
 
+// connect: db
+mongoose.connect(process.env.DATABASE_CLOUD, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+})
+    .then(() => console.log('db connected'))
+    .catch(error => console.error(error));
+
 // routes
 const authRoutes = require('./routes/auth');
 
