@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
-import { showSuccessMessage, showErrorMessage } from '../../../utils/alerts';
+import { showSuccessMessage, showErrorMessage } from '../../../utils/alert';
 import { API } from '../../../config';
 import { withRouter } from 'next/router';
 import Layout from '../../../components/Layout';
@@ -32,7 +32,7 @@ const ActivateAccount = ({ router }) => {
         try {
             const response = await axios.post(`${API}/register/activate`, { token });
             // console.log('account activate response', response)
-            setState({ ...state, name: '', token: '', buttonText: 'Activated', success: response.data.message });
+            setState({ ...state, name: '', token: '', buttonText: 'Activated', success: response.data.msg });
         } catch (error) {
             setState({ ...state, buttonText: 'Activate Account', error: error.response.data.error });
         }
