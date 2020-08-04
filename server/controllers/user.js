@@ -13,7 +13,7 @@ AWS.config.update({
 
 const ses = new AWS.SES({ apiVersion: '2010-12-01' });
 
-exports.register = (req, res) => {
+exports.userRegister = (req, res) => {
 
     const { name, email, password } = req.body;
 
@@ -46,7 +46,7 @@ exports.register = (req, res) => {
 
 };
 
-exports.registerActivate = (req, res) => {
+exports.userActivate = (req, res) => {
     const { token } = req.body;
 
     jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {

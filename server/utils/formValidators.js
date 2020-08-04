@@ -1,6 +1,6 @@
 const { check } = require('express-validator');
 
-exports.userRegisterValidator = [
+exports.validateRegister = [
     check('name')
         .not()
         .isEmpty()
@@ -13,7 +13,7 @@ exports.userRegisterValidator = [
         .withMessage('Password must be at least 6 characters long')
 ];
 
-exports.userLoginValidator = [
+exports.validateLogin = [
     check('email')
         .isEmail()
         .withMessage('Must be a valid email address'),

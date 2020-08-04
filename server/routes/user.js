@@ -1,21 +1,19 @@
-const routerAuth = require('express').Router();
+const routerUser = require('express').Router();
+const { validateRegister } = require('../utils/formValidators');
 
-
-// validators
-const { userRegisterValidator } = require('../utils/inputValidator');
-const { runValidation } = require('../validators');
+// validators middleware
+const { runValidation } = require('../middleware/validators');
 
 //controllers
-const { register, registerActivate } = require('../controllers/user');
-const { errStatus405 } = require('../controllers/error')
+const { userRegister, userActivate, errStatus405 } = require('../controllers');
 
-routerAuth
-    .route('/user')
-    .post(userRegisterValidator, runValidation, register)
+routerUser
+    .route('/')
+    .post(validateRegister, runValidation, userRegister)
     .all(errStatus405);
-routerAuth
-    .route('/user/activate')
-    .post(registerActivate)
+routerUser
+    .route('/activate')
+    .post(userActivate)
     .all(errStatus405);
 
-module.exports = routerAuth;
+module.exports = routerUser;

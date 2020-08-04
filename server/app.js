@@ -15,7 +15,8 @@ mongoose.connect(process.env.DATABASE_CLOUD, {
     .catch(error => console.error(error));
 
 // routes
-const userRoutes = require('./routes/user');
+const apiRouter = require('./routes/api');
+
 
 const { errInvalidPaths } = require("./controllers/error");
 
@@ -26,7 +27,8 @@ app.use(express.json());
 app.use(cors({ origin: process.env.CLIENT_URL }));
 
 
-app.use('/api', userRoutes);
+app.use('/api', apiRouter);
+
 
 //error-controller for invalid paths
 app.all("/*", errInvalidPaths);
