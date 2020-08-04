@@ -27,3 +27,5 @@ app.use(cors({ origin: process.env.CLIENT_URL }));
 app.use('/api', authRoutes);
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`API is running on port ${port}`));
+
+module.exports = app;
