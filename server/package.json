@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "test": "mocha spec/app.spec.js"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +22,10 @@
     "shortid": "^2.2.15"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.1.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
   }
 }
