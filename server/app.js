@@ -15,7 +15,9 @@ mongoose.connect(process.env.DATABASE_CLOUD, {
     .catch(error => console.error(error));
 
 // routes
-const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
+
+const { errInvalidPaths } = require("./controllers/error");
 
 // middlewares
 app.use(morgan('dev'));
@@ -24,7 +26,11 @@ app.use(express.json());
 app.use(cors({ origin: process.env.CLIENT_URL }));
 
 
-app.use('/api', authRoutes);
+app.use('/api', userRoutes);
+
+//error-controller for invalid paths
+app.all("/*", errInvalidPaths);
+
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`API is running on port ${port}`));
 
