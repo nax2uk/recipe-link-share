@@ -1,6 +1,6 @@
 # Share your Favourite Recipe Links App
 * This is an app for users to share links of their favourite recipes categorised according to cuisines.
-* There is also a back-end system where admin can add new categories.
+* There will also be (hopefully!) a back-end system where admin can add new categories.
 
 ## Link
 * TBA
