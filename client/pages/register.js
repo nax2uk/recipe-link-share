@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Layout from '../components/Layout';
+import { showErrorMessage, showSuccessMessage } from '../utils/alert';
 
 const Register = () => {
     const [state, setState] = useState({
-        name: '',
-        email: '',
-        password: '',
+        name: 'ryan',
+        email: 'ryan@gmail.com',
+        password: 'abcdefghijk',
         error: '',
         success: '',
         buttonText: 'Register'
@@ -15,24 +16,45 @@ const Register = () => {
     const { name, email, password, error, success, buttonText } = state;
 
     const handleChange = name => e => {
-        setState({ ...state, [name]: e.target.value, error: '', success: '', buttonText: 'Register' });
+        setState({
+            ...state,
+            [name]: e.target.value,
+            error: '',
+            success: '',
+            buttonText: 'Register'
+        });
     };
 
     const handleSubmit = e => {
         e.preventDefault();
+        setState({ ...state, buttonText: 'Registering' })
         axios.post(`http://localhost:8000/api/register`, {
             name,
             email,
             password
         })
             .then((response) => {
-                console.log(response);
+                console.log(response)
+                setState({
+                    ...state,
+                    name: '',
+                    email: '',
+                    password: '',
+                    buttonText: 'Submitted',
+                    success: response.data.msg
+                })
 
             })
             .catch(error => {
-                console.error(error);
+                console.log(error.response.data.error)
+                setState({
+                    ...state,
+                    buttonText: 'Register',
+                    error: error.response.data.error,
+
+                })
             })
-        //console.table({ name, email, password });
+
     };
 
     const registerForm = () => (
@@ -75,9 +97,9 @@ const Register = () => {
             <div className="col-md-6 offset-md-3">
                 <h1>Register</h1>
                 <br />
+                {success && showSuccessMessage(success)}
+                {error && showErrorMessage(error)}
                 {registerForm()}
-                <hr />
-                {JSON.stringify(state)}
             </div>
         </Layout>
     );
