@@ -69,5 +69,68 @@ describe('#server', () => {
         })
 
     })
+    describe('#/api/login', () => {
+        describe("#GET #PUT, #DELETE, #PATCH", () => {
+            it("status:405, responds appropriately because the HTTP method is not allowed", () => {
+                const invalidMethods = ["put", "delete", "get", "patch"];
+                const requests = invalidMethods.map((httpRequestMethod) => {
+                    return request(app)
+                    [httpRequestMethod]("/api/login")
+                        .expect(405)
+                        .then((resp) => {
+                            expect(resp.body.msg).to.equal(
+                                `Method Not Allowed: for HTTP ${httpRequestMethod.toUpperCase()} at /api/login`
+                            );
+                        });
+                });
+                return Promise.all(requests);
+            });
+        });
 
+        describe('#POST', () => {
+
+            it('status:200, response with name, role and email', () => {
+                return request(app)
+                    .post('/api/login')
+                    .send({
+                        email: 'azlinayeo@gmail.com',
+                        password: 'abcdefgh'
+                    })
+                    .expect(200)
+                    .then(resp => {
+                        expect(resp.body.user.email).to.equal('azlinayeo@gmail.com');
+                        expect(resp.body.user.name).to.equal('azlina');
+                        expect(resp.body.user.role).to.equal('subscriber');
+                    })
+            })
+            it('status:400, responds with error message if email does not exist in database', () => {
+                return request(app)
+                    .post('/api/login')
+                    .send({
+                        email: 'abcdef@gmail.com',
+                        password: 'abcdefgh'
+                    })
+                    .expect(400)
+                    .then(resp => {
+                        expect(resp.body.error).to.equal("User with that email does not exist. Please register.");
+
+                    })
+            })
+            it('status:400, responds with error message if email and password does not match', () => {
+                return request(app)
+                    .post('/api/login')
+                    .send({
+                        email: 'azlinayeo@gmail.com',
+                        password: 'abcdefg'
+                    })
+                    .expect(400)
+                    .then(resp => {
+                        expect(resp.body.error).to.equal("Email and password do not match");
+
+                    })
+            })
+        })
+
+    })
 })
+

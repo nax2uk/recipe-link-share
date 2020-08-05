@@ -20,7 +20,7 @@ exports.postLogin = (req, res) => {
         const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
         const { _id, name, email, role } = user;
 
-        return res.status().send({
+        return res.status(200).send({
             token,
             user: { _id, name, email, role }
         });

@@ -9,7 +9,7 @@ const { postLogin, errStatus405 } = require('../controllers')
 
 
 routerLogin
-    .route('/login')
+    .route('/')
     .post(validateLogin, runValidation, postLogin)
     .all(errStatus405);
 
