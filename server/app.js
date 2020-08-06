@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const app = express();
 
-// connect: db
+
 mongoose.connect(process.env.DATABASE_CLOUD, {
     useUnifiedTopology: true,
     useNewUrlParser: true
@@ -33,6 +33,9 @@ app.use('/api', apiRouter);
 //error-controller for invalid paths
 app.all("/*", errInvalidPaths);
 
+const port = process.env.PORT || 8000;
+
+app.listen(port, () => console.log(`API is running on port ${port}`));
 
 
 module.exports = app;
