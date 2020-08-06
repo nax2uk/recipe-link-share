@@ -30,7 +30,7 @@ const Register = () => {
         e.preventDefault();
         setState({ ...state, buttonText: 'Registering' });
         try {
-            const response = await axios.post(`${API}/register`, {
+            const response = await axios.post(`${API}/user`, {
                 name,
                 email,
                 password
