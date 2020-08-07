@@ -5,6 +5,7 @@ import Router from 'next/router';
 import axios from 'axios';
 import { showSuccessMessage, showErrorMessage } from '../utils/alert';
 import { API } from '../config';
+import { authenticate } from '../utils/auth';
 
 const Login = () => {
     const [state, setState] = useState({
