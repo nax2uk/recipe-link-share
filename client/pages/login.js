@@ -30,7 +30,8 @@ const Login = () => {
                 email,
                 password
             });
-            console.log(response);
+            //console.log(response);
+            authenticate(response, () => Router.push('/'));
         } catch (error) {
             console.log(error);
             setState({ ...state, buttonText: 'Login', error: error.response.data.error });
