@@ -3,6 +3,8 @@ import axios from 'axios';
 import Layout from '../components/Layout';
 import { showErrorMessage, showSuccessMessage } from '../utils/alert';
 import { API } from '../config';
+import { isAuthenticated } from '../utils/auth';
+import Router from 'next/router';
 
 const Register = () => {
     const [state, setState] = useState({

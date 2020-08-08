@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import { isAuthenticated, logout } from '../utils/auth';
 
 Router.onRouteChangeStart = url => NProgress.start();
 Router.onRouteChangeComplete = url => NProgress.done();
@@ -37,6 +38,21 @@ const Layout = ({ children }) => {
                 <Link href="/register">
                     <a className="nav-link text-dark">Register</a>
                 </Link>
+            </li>
+
+            {isAuthenticated() && isAuthenticated().role === 'admin'
+                &&
+                <li className="nav-item" ml-auto>
+                    <Link href="/admin">
+                        <a className="nav-link text-dark">Admin</a>
+                    </Link>
+                </li>
+            }
+            <li className="nav-item">
+                <a
+                    className="nav-link text-dark"
+                    onClick={logout}
+                >Logout</a>
             </li>
         </ul>
     );

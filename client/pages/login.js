@@ -5,7 +5,7 @@ import Router from 'next/router';
 import axios from 'axios';
 import { showSuccessMessage, showErrorMessage } from '../utils/alert';
 import { API } from '../config';
-import { authenticate } from '../utils/auth';
+import { authenticate, isAuthenticated } from '../utils/auth';
 
 const Login = () => {
     const [state, setState] = useState({
@@ -18,6 +18,9 @@ const Login = () => {
 
     const { email, password, error, success, buttonText } = state;
 
+    useEffect(() => {
+        isAuthenticated() && Router.push('/');
+    }, [])
     const handleChange = name => e => {
         setState({ ...state, [name]: e.target.value, error: '', success: '', buttonText: 'Login' });
     };
@@ -30,8 +33,15 @@ const Login = () => {
                 email,
                 password
             });
-            //console.log(response);
-            authenticate(response, () => Router.push('/'));
+            authenticate(
+                response,
+                () => {
+                    const userAuthenticated = isAuthenticated();
+                    return userAuthenticated && userAuthenticated.role === 'admin' ?
+                        Router.push('/admin') :
+                        Router.push('/user');
+                });
+
         } catch (error) {
             console.log(error);
             setState({ ...state, buttonText: 'Login', error: error.response.data.error });
