@@ -1,4 +1,11 @@
+import Layout from '../../components/Layout';
+
+
 const Admin = () => {
-    return <h1>Admin</h1>
+    return (
+        <Layout>
+            <h1>Admin</h1>
+        </Layout>
+    );
 }
 export default Admin;
