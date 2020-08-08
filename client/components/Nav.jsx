@@ -24,6 +24,24 @@ const Nav = () => {
                     </li>
                 </>
             }
+
+            {user && user.role === 'admin'
+                &&
+                <li className="nav-item ml-auto">
+                    <Link href="/admin">
+                        <a className="nav-link text-dark">{user.name}</a>
+                    </Link>
+                </li>
+            }
+
+            {user && user.role === 'subscriber'
+                &&
+                <li className="nav-item ml-auto">
+                    <Link href="/user">
+                        <a className="nav-link text-dark">{user.name}</a>
+                    </Link>
+                </li>
+            }
             {user &&
                 <li className="nav-item">
                     <a
@@ -32,24 +50,6 @@ const Nav = () => {
                     >Logout</a>
                 </li>
             }
-            {user && user.role === 'admin'
-                &&
-                <li className="nav-item" ml-auto>
-                    <Link href="/admin">
-                        <a className="nav-link text-dark">Admin</a>
-                    </Link>
-                </li>
-            }
-
-            {user && user.role === 'subscriber'
-                &&
-                <li className="nav-item" ml-auto>
-                    <Link href="/user">
-                        <a className="nav-link text-dark">User</a>
-                    </Link>
-                </li>
-            }
-
         </ul>
     );
 };
