@@ -3,9 +3,11 @@ import { API } from '../config';
 import { getCookie } from '../utils/auth';
 
 const withUser = Page => {
+
     const WithAuthUser = props => <Page{...props} />
     WithAuthUser.getInitialProps = async context => {
         const token = getCookie('token', context.req);
+
         let user = null;
         if (token) {
             try {
@@ -26,6 +28,7 @@ const withUser = Page => {
             context.res.writeHead(302, {
                 Location: '/'
             })
+            context.res.end();
         }
         else {
             return {
