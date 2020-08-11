@@ -134,5 +134,42 @@ describe('#server', () => {
         })
 
     })
+    describe('#api/auth', () => {
+        describe('#GET', () => {
+            it('status:404 - default from error message in html', () => {
+                return request(app)
+                    .post('/api/auth')
+                    .send({
+                        email: 'ryan@gmail.com',
+                        password: 'abcdefgh'
+                    })
+                    .expect(404)
+            });
+
+            it('status:200 if auth is success', () => {
+                return request(app)
+                    .post('/api/login')
+                    .send({
+                        email: 'azlinayeo@gmail.com',
+                        password: 'abcdefgh'
+                    })
+                    .expect(200)
+                    .then(resp => {
+                        const { token } = resp.body;
+                        console.log(token);
+                        return request(app)
+                            .get('/api/auth')
+                            .set('Authorization', `Bearer ${token}`)
+                            .expect(200)
+                            .then(resp => {
+                                expect(resp.body.name).toBe('azlina');
+                                expect(resp.body.role).toBe('subscriber');
+                            })
+                    })
+            });
+
+
+        })
+    })
 })
 
