@@ -114,7 +114,6 @@ describe('#server', () => {
         });
 
         describe('#POST', () => {
-
             it('status:200, response with name, role and email', () => {
                 return request(app)
                     .post('/api/login')
