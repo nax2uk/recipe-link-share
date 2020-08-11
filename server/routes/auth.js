@@ -1,14 +1,14 @@
-const routerAuth = require('express').Router();
+// const routerAuth = require('express').Router();
 
-// controller
-const { readProfile } = require('../controllers/auth');
+// // controller
+// const { readProfile } = require('../controllers/auth');
 
-// middleware
-const { requireLogin, authMiddleware, adminMiddleware } = require('../middleware/auth');
+// // middleware
+// const { requireLogin, authMiddleware, adminMiddleware } = require('../middleware/auth');
 
-routerAuth
-    .route('/')
-    //.get(requireLogin, authMiddleware, readProfile)
-    .get(requireLogin, authMiddleware, readProfile)
-module.exports = routerAuth;
+// routerAuth
+//     .route('/')
+//     //.get(requireLogin, authMiddleware, readProfile)
+//     .get(requireLogin, authMiddleware, readProfile)
+// module.exports = routerAuth;
 

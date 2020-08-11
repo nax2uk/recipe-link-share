@@ -6,10 +6,10 @@ afterAll(async () => {
 });
 
 describe('#server', () => {
-    describe('#/api/register', () => {
-        describe("#GET #PUT, #DELETE, #PATCH", () => {
+    describe('#/api/user', () => {
+        describe("#PUT, #DELETE, #PATCH", () => {
             it("status:405, responds appropriately because the HTTP method is not allowed", () => {
-                const invalidMethods = ["put", "delete", "get", "patch"];
+                const invalidMethods = ["put", "delete", "patch"];
                 const requests = invalidMethods.map((httpRequestMethod) => {
                     return request(app)
                     [httpRequestMethod]("/api/user")
@@ -68,6 +68,30 @@ describe('#server', () => {
 
                     })
             })
+        })
+        describe('#GET', () => {
+            it('status:200 if get user is successful', () => {
+                return request(app)
+                    .post('/api/login')
+                    .send({
+                        email: 'azlinayeo@gmail.com',
+                        password: 'abcdefgh'
+                    })
+                    .expect(200)
+                    .then(resp => {
+                        const { token } = resp.body;
+                        console.log(token);
+                        return request(app)
+                            .get('/api/user')
+                            .set('Authorization', `Bearer ${token}`)
+                            .expect(200)
+                            .then(resp => {
+                                expect(resp.body.name).toBe('azlina');
+                                expect(resp.body.role).toBe('subscriber');
+                            })
+                    })
+            });
+
         })
 
     })
@@ -134,42 +158,30 @@ describe('#server', () => {
         })
 
     })
-    describe('#api/auth', () => {
-        describe('#GET', () => {
-            it('status:404 - default from error message in html', () => {
-                return request(app)
-                    .post('/api/auth')
-                    .send({
-                        email: 'ryan@gmail.com',
-                        password: 'abcdefgh'
-                    })
-                    .expect(404)
-            });
-
-            it('status:200 if auth is success', () => {
-                return request(app)
-                    .post('/api/login')
-                    .send({
-                        email: 'azlinayeo@gmail.com',
-                        password: 'abcdefgh'
-                    })
-                    .expect(200)
-                    .then(resp => {
-                        const { token } = resp.body;
-                        console.log(token);
-                        return request(app)
-                            .get('/api/auth')
-                            .set('Authorization', `Bearer ${token}`)
-                            .expect(200)
-                            .then(resp => {
-                                expect(resp.body.name).toBe('azlina');
-                                expect(resp.body.role).toBe('subscriber');
-                            })
-                    })
-            });
-
-
-        })
-    })
+    // describe('#api/auth', () => {
+    //     describe('#GET', () => {
+    //         it('status:200 if auth is success', () => {
+    //             return request(app)
+    //                 .post('/api/login')
+    //                 .send({
+    //                     email: 'azlinayeo@gmail.com',
+    //                     password: 'abcdefgh'
+    //                 })
+    //                 .expect(200)
+    //                 .then(resp => {
+    //                     const { token } = resp.body;
+    //                     console.log(token);
+    //                     return request(app)
+    //                         .get('/api/auth')
+    //                         .set('Authorization', `Bearer ${token}`)
+    //                         .expect(200)
+    //                         .then(resp => {
+    //                             expect(resp.body.name).toBe('azlina');
+    //                             expect(resp.body.role).toBe('subscriber');
+    //                         })
+    //                 })
+    //         });
+    //     })
+    // })
 })
 

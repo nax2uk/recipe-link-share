@@ -6,7 +6,7 @@ exports.requireLogin = expressJwt({
     algorithms: ['HS256']
 }); // req.user
 
-exports.authMiddleware = (req, resp, next) => {
+exports.userMiddleware = (req, resp, next) => {
     const authUserId = req.user._id;
     console.log(authUserId)
     User.findOne({ _id: authUserId }).exec((err, user) => {

@@ -78,3 +78,8 @@ exports.userActivate = (req, res) => {
 
     });
 }
+exports.userProfile = (req, res) => {
+    req.profile.hashed_password = undefined;
+    req.profile.salt = undefined;
+    return res.json(req.profile)
+}
