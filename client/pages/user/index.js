@@ -12,8 +12,8 @@ const User = ({ user }) => {
     );
 }
 
-User.getInitialProps = async () => {
-    const token = getCookie('token');
+User.getInitialProps = async (context) => {
+    const token = getCookie('token', context.req);
     try {
         const response = await axios.get(`${API}/user`, {
             headers: {
