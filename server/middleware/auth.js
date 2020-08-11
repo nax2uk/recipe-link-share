@@ -1,13 +1,17 @@
 const expressJwt = require('express-jwt');
-const { default: User } = require('../../client/pages/user');
+const User = require('../models/user');
 
-exports.requireAuth = expressJwt({ secret: process.env.JWT_SECRET })
+exports.requireLogin = expressJwt({
+    secret: process.env.JWT_SECRET,
+    algorithms: ['HS256']
+}); // req.user
 
 exports.authMiddleware = (req, resp, next) => {
     const authUserId = req.user._id;
+    console.log(authUserId)
     User.findOne({ _id: authUserId }).exec((err, user) => {
         if (err || !user) {
-            return resp.status(400).json({
+            return resp.status(404).json({
                 error: "User not found",
             })
         }
@@ -20,13 +24,13 @@ exports.adminMiddleware = (req, resp, next) => {
     const authAdminId = req.user._id;
     User.findOne({ _id: authAdminId }).exec((err, user) => {
         if (err || !user) {
-            return resp.status(400).json({
+            return resp.status(404).json({
                 error: "User not found",
             })
         }
         if (user.role !== 'admin') {
-            return resp.status(400).json({
-                error: "Admin resource. Access denied"
+            return resp.status(401).json({
+                error: "Admin resource. Access denied."
             })
         }
         req.profile = user;
