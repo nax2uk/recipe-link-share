@@ -83,3 +83,20 @@ exports.userProfile = (req, res) => {
     req.profile.salt = undefined;
     return res.json(req.profile)
 }
+
+exports.userForgotPassword = (req, res) => {
+    const { email } = req.body;
+    // check if user email is in database
+    User.findOne({ email }).exec((err, user) => {
+        if (err || !user) {
+            return res.status(400).json({
+                error: 'User with that email does not exist.'
+            });
+        }
+    })
+    //generate json webtoken
+
+    //email user
+}
+
+exports.userResetPassword = () => { }
