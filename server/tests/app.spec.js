@@ -101,11 +101,11 @@ describe('#server', () => {
                 const invalidMethods = ["delete", "patch", "get", "post"];
                 const requests = invalidMethods.map((httpRequestMethod) => {
                     return request(app)
-                    [httpRequestMethod]("/api/user")
+                    [httpRequestMethod]("/api/user/forgot-password")
                         .expect(405)
                         .then((resp) => {
                             expect(resp.body.msg).toBe(
-                                `Method Not Allowed: for HTTP ${httpRequestMethod.toUpperCase()} at /api/user`
+                                `Method Not Allowed: for HTTP ${httpRequestMethod.toUpperCase()} at /api/user/forgot-password`
                             );
                         });
                 });
@@ -115,7 +115,7 @@ describe('#server', () => {
         describe('#PUT', () => {
             it('status:400, request for reset password when user email does not exist in database', () => {
                 return request(app)
-                    .put('/api/user/reset-password')
+                    .put('/api/user/forgot-password')
                     .send({
                         email: 'ryan@gmail.com',
                     })
