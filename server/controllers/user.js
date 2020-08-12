@@ -130,4 +130,48 @@ exports.userForgotPassword = (req, res) => {
     //email user
 }
 
-exports.userResetPassword = () => { }
+exports.userResetPassword = (req, res) => {
+    const { resetPasswordLink, newPassword } = req.body;
+    if (resetPasswordLink) {
+        // check for expiry
+        jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, (err, success) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'Expired Link. Try again.'
+                })
+            }
+            // find user based on link
+            User.findOne({ resetPasswordLink }).exec((err, user) => {
+                if (err || !user) {
+                    return res.status(400).json({
+                        error: 'Invalid token. Try again.'
+                    })
+                }
+
+
+                const updatedFields = {
+                    password: newPassword,
+                    resetPasswordLink: ''
+                }
+                console.log(newPassword);
+                //const updatedUser = { ...user, ...updatedFields };
+                console.log(user);
+                Object.assign(user, updatedFields);
+                console.log(user);
+                user.save((err, result) => {
+                    if (err) {
+                        return res.status(400).json({
+                            error: 'Password reset failed. Try again.'
+                        })
+                    }
+                    res.status(200).json({
+                        msg: 'Password reset is a success. Please log in with your new password.'
+                    })
+
+                })
+            })
+
+        });
+    }
+
+}

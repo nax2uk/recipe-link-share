@@ -1,6 +1,6 @@
 const { errInvalidPaths, errStatus405 } = require("./error");
 const { postLogin } = require("./login");
-const { userRegister, userActivate, userProfile, userForgotPassword } = require("./user");
+const { userRegister, userActivate, userProfile, userForgotPassword, userResetPassword } = require("./user");
 
 module.exports = {
     errStatus405,
@@ -9,6 +9,7 @@ module.exports = {
     userRegister,
     userActivate,
     userProfile,
-    userForgotPassword
+    userForgotPassword,
+    userResetPassword
 };
 
