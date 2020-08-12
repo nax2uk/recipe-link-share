@@ -95,6 +95,38 @@ describe('#server', () => {
         })
 
     })
+    describe('#api/user/forgot-password', () => {
+        describe("#GET, #POST, #DELETE, #PATCH", () => {
+            it("status:405, responds appropriately because the HTTP method is not allowed", () => {
+                const invalidMethods = ["delete", "patch", "get", "post"];
+                const requests = invalidMethods.map((httpRequestMethod) => {
+                    return request(app)
+                    [httpRequestMethod]("/api/user")
+                        .expect(405)
+                        .then((resp) => {
+                            expect(resp.body.msg).toBe(
+                                `Method Not Allowed: for HTTP ${httpRequestMethod.toUpperCase()} at /api/user`
+                            );
+                        });
+                });
+                return Promise.all(requests);
+            });
+        });
+        describe('#PUT', () => {
+            it('status:400, request for reset password when user email does not exist in database', () => {
+                return request(app)
+                    .put('/api/user/reset-password')
+                    .send({
+                        email: 'ryan@gmail.com',
+                    })
+                    .expect(400)
+                    .then(resp => {
+                        expect(resp.body.error).toBe('User with that email does not exist.')
+
+                    })
+            })
+        })
+    })
     describe('#/api/login', () => {
         describe("#GET #PUT, #DELETE, #PATCH", () => {
             it("status:405, responds appropriately because the HTTP method is not allowed", () => {
