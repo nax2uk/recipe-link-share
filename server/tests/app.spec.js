@@ -75,7 +75,7 @@ describe('#server', () => {
                     .post('/api/login')
                     .send({
                         email: 'azlinayeo@gmail.com',
-                        password: 'abcdefgh'
+                        password: '123456'
                     })
                     .expect(200)
                     .then(resp => {
@@ -125,18 +125,69 @@ describe('#server', () => {
 
                     })
             })
-            it('status:200, received when input valid email', () => {
+            /**** COMMENTED OUT TO PREVENT NUMEROUS RESET PASSWORD EMAIL */
+            /*         it('status:200, received when input valid email', () => {
+                         return request(app)
+                             .put('/api/user/forgot-password')
+                             .send({
+                                 email: 'azlinayeo@gmail.com',
+                             })
+                             .expect(200)
+                             .then(resp => {
+                                 expect(resp.body.msg).toBe(`Email has been sent to azlinayeo@gmail.com. Click on the link to reset your password.`)
+         
+                             })
+                     })
+                     */
+        })
+    })
+
+    describe('#api/user/reset-password', () => {
+        describe("#GET, #POST, #DELETE, #PATCH", () => {
+            it("status:405, responds appropriately because the HTTP method is not allowed", () => {
+                const invalidMethods = ["delete", "patch", "get", "post"];
+                const requests = invalidMethods.map((httpRequestMethod) => {
+                    return request(app)
+                    [httpRequestMethod]("/api/user/reset-password")
+                        .expect(405)
+                        .then((resp) => {
+                            expect(resp.body.msg).toBe(
+                                `Method Not Allowed: for HTTP ${httpRequestMethod.toUpperCase()} at /api/user/reset-password`
+                            );
+                        });
+                });
+                return Promise.all(requests);
+            });
+        });
+        describe('#PUT', () => {
+            it('status:400, token has expired', () => {
                 return request(app)
-                    .put('/api/user/forgot-password')
+                    .put('/api/user/reset-password')
                     .send({
-                        email: 'azlinayeo@gmail.com',
+                        resetPasswordLink: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYXpsaW5hIiwiaWF0IjoxNTk3MjMwNTQyLCJleHAiOjE1OTcyMzE0NDJ9.pqK1YTInfBkcJbW1jubJi8RjiEwOGzXYkXdBiE2RyNQ',
+                        newPassword: 'abcdef',
                     })
-                    .expect(200)
+                    .expect(400)
                     .then(resp => {
-                        expect(resp.body.msg).toBe(`Email has been sent to azlinayeo@gmail.com. Click on the link to reset your password.`)
+                        expect(resp.body.error).toBe('Expired Link. Try again.')
 
                     })
             })
+            /*** WILL PASS ONLY WHEN GIVEN VALID TOKEN WITHIN 15 MIN OF BEING GIVEN THE TOKEN****/
+            /*       it('status:200, received when input valid email', () => {
+                       return request(app)
+                           .put('/api/user/reset-password')
+                           .send({
+                               resetPasswordLink: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYXpsaW5hIiwiaWF0IjoxNTk3MjMyNzI2LCJleHAiOjE1OTcyMzM2MjZ9.eAWWw-fwCsCJC-H0_vXiJApT0T4HZaHAYCU-Gqjukhk',
+                               newPassword: '123456',
+                           })
+                           .expect(200)
+                           .then(resp => {
+                               expect(resp.body.msg).toBe('Password reset is a success. Please log in with your new password.')
+       
+                           })
+                   })
+                   */
         })
     })
     describe('#/api/login', () => {
@@ -163,7 +214,7 @@ describe('#server', () => {
                     .post('/api/login')
                     .send({
                         email: 'azlinayeo@gmail.com',
-                        password: 'abcdefgh'
+                        password: '123456'
                     })
                     .expect(200)
                     .then(resp => {
@@ -201,30 +252,7 @@ describe('#server', () => {
         })
 
     })
-    // describe('#api/auth', () => {
-    //     describe('#GET', () => {
-    //         it('status:200 if auth is success', () => {
-    //             return request(app)
-    //                 .post('/api/login')
-    //                 .send({
-    //                     email: 'azlinayeo@gmail.com',
-    //                     password: 'abcdefgh'
-    //                 })
-    //                 .expect(200)
-    //                 .then(resp => {
-    //                     const { token } = resp.body;
-    //                     console.log(token);
-    //                     return request(app)
-    //                         .get('/api/auth')
-    //                         .set('Authorization', `Bearer ${token}`)
-    //                         .expect(200)
-    //                         .then(resp => {
-    //                             expect(resp.body.name).toBe('azlina');
-    //                             expect(resp.body.role).toBe('subscriber');
-    //                         })
-    //                 })
-    //         });
-    //     })
-    // })
+
+
 })
 
