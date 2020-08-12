@@ -3,7 +3,7 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const shortid = require('shortid');
 
-const { registerEmailParams } = require('../utils/email');
+const { registerEmailParams, forgotPasswordEmailParams } = require('../utils/email');
 
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -93,8 +93,39 @@ exports.userForgotPassword = (req, res) => {
                 error: 'User with that email does not exist.'
             });
         }
+        //generate json webtoken
+        const token = jwt.sign(
+            { name: user.name },
+            process.env.JWT_RESET_PASSWORD,
+            { expiresIn: '15m' }
+        );
+        //sendEmail
+        const params = forgotPasswordEmailParams(email, token);
+
+        //populate the db > user >resetPasswordLink
+        return user.updateOne({ resetPasswordLink: token }, (err, success) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'Password reset failed. Try later.'
+                })
+            }
+
+            const sendEmail = ses.sendEmail(params).promise();
+            sendEmail
+                .then(data => {
+                    console.log('ses reset pw success', data);
+                    return res.status(200).json({
+                        msg: `Email has been sent to ${email}. Click on the link to reset your password.`
+                    })
+                })
+                .catch(error => {
+                    console.log('ses reset pw failed', error);
+                    return res.status(400).json({
+                        msg: 'We could not verify your email. Please verify later.'
+                    });
+                })
+        })
     })
-    //generate json webtoken
 
     //email user
 }
