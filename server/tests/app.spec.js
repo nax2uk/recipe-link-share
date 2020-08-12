@@ -125,6 +125,18 @@ describe('#server', () => {
 
                     })
             })
+            it('status:200, received when input valid email', () => {
+                return request(app)
+                    .put('/api/user/forgot-password')
+                    .send({
+                        email: 'azlinayeo@gmail.com',
+                    })
+                    .expect(200)
+                    .then(resp => {
+                        expect(resp.body.msg).toBe(`Email has been sent to azlinayeo@gmail.com. Click on the link to reset your password.`)
+
+                    })
+            })
         })
     })
     describe('#/api/login', () => {
