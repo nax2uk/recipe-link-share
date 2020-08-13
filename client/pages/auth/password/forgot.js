@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { showSuccessMessage, showErrorMessage } from '../../../utils/alert';
 import { API } from '../../../config';
@@ -66,7 +66,7 @@ const ForgotPassword = () => {
                     <br />
                     {success && showSuccessMessage(success)}
                     {error && showErrorMessage(error)}
-                    {passwordForgotForm()}
+                    {!success && passwordForgotForm()}
                 </div>
             </div>
         </Layout>
