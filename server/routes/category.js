@@ -8,7 +8,7 @@ const { runValidation } = require('../middleware/validators');
 const { requireLogin, adminMiddleware } = require('../middleware/auth');
 
 //controller
-const { postCategory, getAllCategories, getCategoryById, removeCategoryById errStatus405 } = require('../controllers');
+const { postCategory, getAllCategories, getCategoryById, removeCategoryById, putCategoryById, errStatus405 } = require('../controllers');
 
 routerCategory
     .route('/')
@@ -22,10 +22,5 @@ routerCategory
     .put(validateUpdateCategory, runValidation, requireLogin, adminMiddleware, putCategoryById)
     .delete(requireLogin, adminMiddleware, removeCategoryById)
     .all(errStatus405);
-
-
-
-
-
 
 module.exports = routerCategory;
