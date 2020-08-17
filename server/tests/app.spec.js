@@ -253,6 +253,53 @@ describe('#server', () => {
 
     })
 
+    describe.only('#api/category', () => {
+        describe("#PUT, #DELETE, #PATCH", () => {
+            it("status:405, responds appropriately because the HTTP method is not allowed", () => {
+                const invalidMethods = ["put", "delete", "patch"];
+                const requests = invalidMethods.map((httpRequestMethod) => {
+                    return request(app)
+                    [httpRequestMethod]("/api/category")
+                        .expect(405)
+                        .then((resp) => {
+                            expect(resp.body.msg).toBe(
+                                `Method Not Allowed: for HTTP ${httpRequestMethod.toUpperCase()} at /api/category`
+                            );
+                        });
+                });
+                return Promise.all(requests);
+            });
+        });
+        describe("#POST", () => {
+            it('status:201 create a category', () => {
+                return request(app)
+                    .post('/api/login')
+                    .send({
+                        email: 'nax2uk@gmail.com',
+                        password: '123456'
+                    })
+                    .expect(200)
+                    .then(response => {
+                        const { token } = response.body;
+                        console.log(token);
+                        return request(app)
+                            .post('/api/category')
+                            .set('Authorization', `Bearer ${token}`)
+                            .send({
+                                name: "Vegan Meals",
+                                content: "Recipes for Vegan People"
 
+                            })
+                            .expect(201)
+                            .then((resp) => {
+                                expect(resp.body.name).toBe('Vegan Meals');
+                                expect(resp.body.slug).toBe('vegan-meals');
+                            })
+
+                    })
+            })
+        })
+    });
 })
+
 
