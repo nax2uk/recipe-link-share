@@ -286,14 +286,14 @@ describe('#server', () => {
                             .post('/api/category')
                             .set('Authorization', `Bearer ${token}`)
                             .send({
-                                name: "Vegan Meals",
-                                content: "Recipes for Vegan People"
+                                name: "Noodle Dishes",
+                                content: "Stir Fried or Soup Based"
 
                             })
                             .expect(201)
                             .then((resp) => {
-                                expect(resp.body.name).toBe('Vegan Meals');
-                                expect(resp.body.slug).toBe('vegan-meals');
+                                expect(resp.body.name).toBe('Noodle Dishes');
+                                expect(resp.body.slug).toBe('noodle-dishes');
                             })
 
                     })
