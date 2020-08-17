@@ -1,6 +1,7 @@
 const { errInvalidPaths, errStatus405 } = require("./error");
 const { postLogin } = require("./login");
 const { userRegister, userActivate, userProfile, userForgotPassword, userResetPassword } = require("./user");
+const { postCategory, getAllCategories, getCategoryById, removeCategoryById, putCategoryById } = require('./category');
 
 module.exports = {
     errStatus405,
@@ -10,6 +11,11 @@ module.exports = {
     userActivate,
     userProfile,
     userForgotPassword,
-    userResetPassword
+    userResetPassword,
+    postCategory,
+    getAllCategories,
+    getCategoryById,
+    removeCategoryById,
+    putCategoryById
 };
 
