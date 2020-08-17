@@ -9,6 +9,6 @@ const {
 routerApi.use("/user", routerUser);
 routerApi.use("/login", routerLogin);
 routerApi.use("/admin", routerAdmin);
-routerCategory.use("/category", routerCategory);
+routerApi.use("/category", routerCategory);
 
 module.exports = routerApi;
