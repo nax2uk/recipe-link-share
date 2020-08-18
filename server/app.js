@@ -24,7 +24,7 @@ const { errInvalidPaths } = require("./controllers/error");
 // middlewares
 app.use(morgan('dev'));
 app.use(express.json());
-//app.use(express.json({ linit: '5mb', type: 'application/json' }));
+//app.use(express.json({ limit: '5mb', type: 'application/json' }));
 // app.use(cors());
 app.use(cors({ origin: process.env.CLIENT_URL }));
 
