@@ -12,7 +12,7 @@ const { postCategory, getAllCategories, getCategoryById, removeCategoryById, put
 
 routerCategory
     .route('/')
-    .post(/*validateAddCategory, runValidation,*/ requireLogin, adminMiddleware, postCategory)
+    .post(validateAddCategory, runValidation, requireLogin, adminMiddleware, postCategory)
     .get(getAllCategories)
     .all(errStatus405);
 
