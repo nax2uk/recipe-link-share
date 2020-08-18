@@ -253,7 +253,7 @@ describe('#server', () => {
 
     })
 
-    describe.only('#api/category', () => {
+    describe('#api/category', () => {
         describe("#PUT, #DELETE, #PATCH", () => {
             it("status:405, responds appropriately because the HTTP method is not allowed", () => {
                 const invalidMethods = ["put", "delete", "patch"];
@@ -294,6 +294,29 @@ describe('#server', () => {
                             .then((resp) => {
                                 expect(resp.body.name).toBe('Noodle Dishes');
                                 expect(resp.body.slug).toBe('noodle-dishes');
+                            })
+
+                    })
+            })
+        })
+        describe.only("#GET", () => {
+            it("status 200, get all categories", () => {
+                return request(app)
+                    .post('/api/login')
+                    .send({
+                        email: 'nax2uk@gmail.com',
+                        password: '123456'
+                    })
+                    .expect(200)
+                    .then(response => {
+                        const { token } = response.body;
+                        console.log(token);
+                        return request(app)
+                            .get('/api/category')
+                            .set('Authorization', `Bearer ${token}`)
+                            .expect(200)
+                            .then((resp) => {
+                                console.log(resp);
                             })
 
                     })
