@@ -12,8 +12,16 @@ const s3 = new AWS.S3({
     region: process.env.AWS_REGION
 });
 
-exports.getAllCategories = (req, res) => { }
-//postCategory, getAllCategories, getCategoryById, removeCategoryById, putCategoryById
+exports.getAllCategories = (req, res) => {
+    Category.find({}).exec((err, data) => {
+        if (err)
+            return res.status(400).json({
+                error: 'Categories could not load'
+            });
+        res.status(200).json(data);
+    });
+}
+
 exports.getCategoryById = (req, res) => { }
 
 exports.postCategory = (req, res) => {
