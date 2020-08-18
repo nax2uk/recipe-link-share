@@ -9,8 +9,8 @@ exports.validateAddCategory = [
         .isEmpty()
         .withMessage('Image is required.'),
     check('content')
-        .isLength({ min: 20 })
-        .withMessage('Content is required.')
+        .isLength({ min: 10 })
+        .withMessage('Content is required and should be 10 characters long.')
 ];
 
 exports.validateUpdateCategory = [
@@ -19,6 +19,6 @@ exports.validateUpdateCategory = [
         .isEmpty()
         .withMessage('Name is required.'),
     check('content')
-        .isLength({ min: 20 })
-        .withMessage('Content is required.')
+        .isLength({ min: 10 })
+        .withMessage('Content is required and should be 10 characters long.')
 ];
