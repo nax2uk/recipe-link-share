@@ -13,7 +13,6 @@ const categorySchema = new mongoose.Schema({
         lowercase: true,
         unique: true,
         index: true
-
     },
     image: {
         url: String,
