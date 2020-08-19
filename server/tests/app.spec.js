@@ -341,6 +341,43 @@ describe('#server', () => {
                 return Promise.all(requests);
             });
         });
+        describe("POST", () => {
+            it('status: 201 when linked succesfully added', () => {
+                return request(app)
+                    .post('/api/login')
+                    .send({
+                        email: "azlinayeo@gmail.com",
+                        password: "123456"
+                    })
+                    .then(resp => {
+                        const { token } = resp.body;
+                        return request(app)
+                            .post('/api/link')
+                            .set('Authorization', `Bearer ${token}`)
+                            .send({
+                                title: "Chewy Chocolate Chip Cookies",
+                                url: "https://sallysbakingaddiction.com/chewy-chocolate-chip-cookies/#tasty-recipes-70437",
+                                categories: "5f3bf5d77d7ee9b5a76840b3",
+                                type: "Web Page"
+                            })
+                            .expect(201)
+                            .then(response => {
+                                console.log(response.body);
+
+                                expect(response.body).toMatchObject({
+                                    title: 'Chewy Chocolate Chip Cookies',
+                                    categories: ['5f3bf5d77d7ee9b5a76840b3'],
+                                    type: 'Web Page',
+                                    clicks: 0,
+                                    url: 'https://sallysbakingaddiction.com/chewy-chocolate-chip-cookies/#tasty-recipes-70437',
+                                    slug: 'https://sallysbakingaddiction.com/chewy-chocolate-chip-cookies/#tasty-recipes-70437',
+                                    postedBy: '5f29b766b7b225d7c290e3a6',
+                                })
+
+                            })
+                    })
+            })
+        })
     })
 })
 
