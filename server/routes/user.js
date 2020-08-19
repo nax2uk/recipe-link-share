@@ -4,8 +4,8 @@ const routerUser = require('express').Router();
 const { validateRegister, validateForgotPassword, validateResetPassword, } = require('../utils/formValidators/userValidators');
 
 // validators middleware
-const { runValidation } = require('../middleware/validators');
-const { requireLogin, userMiddleware } = require('../middleware/auth');
+const { runValidation, requireLogin, userMiddleware } = require('../middlewares');
+
 //controllers
 const { userRegister, userActivate, userProfile, userForgotPassword, userResetPassword, errStatus405 } = require('../controllers');
 

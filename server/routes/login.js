@@ -2,7 +2,7 @@ const routerLogin = require('express').Router();
 const { validateLogin } = require('../utils/formValidators/userValidators');
 
 // middleware
-const { runValidation } = require('../middleware/validators');
+const { runValidation } = require('../middlewares');
 
 //controllers
 const { postLogin, errStatus405 } = require('../controllers')
