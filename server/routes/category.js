@@ -4,8 +4,7 @@ const routerCategory = require('express').Router();
 const { validateAddCategory, validateUpdateCategory } = require('../utils/formValidators');
 
 // middleware
-const { runValidation } = require('../middleware/validators');
-const { requireLogin, adminMiddleware } = require('../middleware/auth');
+const { requireLogin, adminMiddleware, runValidation } = require('../middleware');
 
 //controller
 const { postCategory, getAllCategories, getCategoryById, removeCategoryById, putCategoryById, errStatus405 } = require('../controllers');
