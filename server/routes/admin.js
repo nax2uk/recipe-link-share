@@ -4,7 +4,7 @@ const routerAdmin = require('express').Router();
 const { userProfile, errStatus405 } = require('../controllers');
 
 // middleware
-const { requireLogin, adminMiddleware } = require('../middleware/auth');
+const { requireLogin, adminMiddleware } = require('../middlewares');
 
 routerAdmin
     .route('/')
