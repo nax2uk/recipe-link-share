@@ -17,8 +17,8 @@ const linkSchema = new mongoose.Schema(
         },
         slug: {
             type: String,
-            unique: true,
             lowercase: true,
+            unique: true,
             index: true
         },
         postedBy: {
