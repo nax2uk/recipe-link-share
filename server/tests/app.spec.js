@@ -299,7 +299,7 @@ describe('#server', () => {
                     })
             })
         })
-        describe.only("#GET", () => {
+        describe("#GET", () => {
             it("status 200, get all categories", () => {
                 return request(app)
                     .post('/api/login')
@@ -323,6 +323,25 @@ describe('#server', () => {
             })
         })
     });
+
+    describe.only('#api/link', () => {
+        describe("#PUT, #DELETE, #PATCH", () => {
+            it("status:405, responds appropriately because the HTTP method is not allowed", () => {
+                const invalidMethods = ["put", "delete", "patch"];
+                const requests = invalidMethods.map((httpRequestMethod) => {
+                    return request(app)
+                    [httpRequestMethod]("/api/link")
+                        .expect(405)
+                        .then((resp) => {
+                            expect(resp.body.msg).toBe(
+                                `Method Not Allowed: for HTTP ${httpRequestMethod.toUpperCase()} at /api/link`
+                            );
+                        });
+                });
+                return Promise.all(requests);
+            });
+        });
+    })
 })
 
 
