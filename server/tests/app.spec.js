@@ -362,8 +362,6 @@ describe('#server', () => {
                             })
                             .expect(201)
                             .then(response => {
-                                console.log(response.body);
-
                                 expect(response.body).toMatchObject({
                                     title: 'Chewy Chocolate Chip Cookies',
                                     categories: ['5f3bf5d77d7ee9b5a76840b3'],
@@ -373,6 +371,27 @@ describe('#server', () => {
                                     slug: 'https://sallysbakingaddiction.com/chewy-chocolate-chip-cookies/#tasty-recipes-70437',
                                     postedBy: '5f29b766b7b225d7c290e3a6',
                                 })
+
+                            })
+                    })
+            })
+        })
+        describe('#GET', () => {
+            it('status:200, fetch list of links successfully', () => {
+                return request(app)
+                    .post('/api/login')
+                    .send({
+                        email: "azlinayeo@gmail.com",
+                        password: "123456"
+                    })
+                    .then(resp => {
+                        const { token } = resp.body;
+                        return request(app)
+                            .get('/api/link')
+                            .set('Authorization', `Bearer ${token}`)
+                            .expect(200)
+                            .then(response => {
+                                expect(response.body.length).toBeGreaterThan(1);
 
                             })
                     })
