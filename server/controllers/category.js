@@ -52,9 +52,13 @@ exports.postCategory = (req, res) => {
         category.postedBy = req.user._id;
 
         category.save((err, data) => {
-            if (err) return res.status(400).json({
-                error: "Duplicate category"
-            })
+            if (err) {
+                return res.status(400).json({
+                    error: "Duplicate category"
+                })
+                // please code delete image from bucket!!!!
+
+            }
             return res.status(201).json(data);
         })
     })
