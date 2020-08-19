@@ -4,7 +4,7 @@ const routerLink = require('express').Router();
 const { validateAddLink, validateUpdateLink } = require('../utils/formValidators/linkValidators');
 
 //middlewares
-const { runValidation, requireLogin, userMiddleware } = require('../middleware');
+const { runValidation, requireLogin, userMiddleware } = require('../middlewares');
 
 // controllers
 const { addLink, getAllLinks, getLinkBySlug, updateLinkBySlug, deleteLinkBySlug, errStatus405 } = require('../controllers');
