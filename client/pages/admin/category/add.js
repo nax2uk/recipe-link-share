@@ -5,24 +5,31 @@ import { API } from '../../../config';
 import { showSuccessMessage, showErrorMessage } from '../../../utils/alert';
 import Layout from '../../../components/Layout';
 import withAdmin from '../../withAdmin';
+import dynamic from 'next/dynamic';
+import 'react-quill/dist/quill.bubble.css';
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 const Add = ({ user, token }) => {
     const [state, setState] = useState({
         name: '',
-        content: '',
         error: '',
         success: '',
         image: '',
         buttonText: 'Add',
     });
     const [imageUploadButtonName, setImageUploadButtonName] = useState('Upload image');
-
-    const { name, content, success, error, image, buttonText, imageUploadText } = state;
+    const { name, success, error, image, buttonText } = state;
+    const [content, setContent] = useState('');
 
     const handleChange = name => e => {
 
         setState({ ...state, [name]: e.target.value, error: '', success: '' });
     };
+    const handleContent = (e) => {
+        setContent(e);
+        setState({ ...state, success: '', error: '' });
+    }
     const handleImage = e => {
 
         let fileInput = false
@@ -49,7 +56,7 @@ const Add = ({ user, token }) => {
     const handleSubmit = async e => {
         e.preventDefault();
         setState({ ...state, buttonText: 'Adding' });
-        // console.log(...formData);
+
         try {
             const response = await axios.post(`${API}/category`, { name, content, image }, {
                 headers: {
@@ -57,7 +64,8 @@ const Add = ({ user, token }) => {
                 }
             });
             console.log('CATEGORY ADD RESPONSE', response);
-            setImageUploadButtonName('Upload Image')
+            setImageUploadButtonName('Upload Image');
+            setContent('');
             setState({
                 ...state,
                 name: '',
@@ -80,7 +88,13 @@ const Add = ({ user, token }) => {
             </div>
             <div className="form-group">
                 <label className="text-muted">Content</label>
-                <textarea onChange={handleChange('content')} value={content} className="form-control" required />
+                <ReactQuill
+                    className="pb-5 mb-3"
+                    style={{ border: '1px solid #666' }}
+                    theme="bubble"
+                    value={content}
+                    onChange={handleContent}
+                />
             </div>
             <div className="form-group">
                 <label className="btn btn-outline-secondary">
