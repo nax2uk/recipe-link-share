@@ -10,6 +10,11 @@ const Nav = () => {
                     <a className="nav-link text-dark">Home</a>
                 </Link>
             </li>
+            <li className="nav-item">
+                <Link href="/user/link/add">
+                    <a className="nav-link text-dark">Submit a link</a>
+                </Link>
+            </li>
             {!user &&
                 <>
                     <li className="nav-item">
