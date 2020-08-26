@@ -39,6 +39,39 @@ const Add = () => {
             ))
         );
     };
+
+    const showTypes = () => (
+        <React.Fragment>
+            <div className="form-check ml-3">
+                <label className="form-check-label">
+                    <input
+                        type="radio"
+                        onClick={handleTypeClick}
+                        checked={type === 'web-page'}
+                        value="web-page"
+                        className="form-check-input"
+                        name="type"
+                    />{' '}
+                    Web Page
+                </label>
+            </div>
+
+            <div className="form-check ml-3">
+                <label className="form-check-label">
+                    <input
+                        type="radio"
+                        onClick={handleTypeClick}
+                        checked={type === 'video'}
+                        value="video"
+                        className="form-check-input"
+                        name="type"
+                    />{' '}
+                    Video
+                </label>
+            </div>
+        </React.Fragment>
+    );
+
     const handleToggle = c => () => {
         // return the first index or -1
         const clickedCategory = categories.indexOf(c);
@@ -51,6 +84,10 @@ const Add = () => {
         }
         console.log('all >> categories', all);
         setState({ ...state, categories: all, success: '', error: '' });
+    };
+
+    const handleTypeClick = e => {
+        setState({ ...state, type: e.target.value, success: '', error: '' });
     };
 
     const handleTitleChange = e => {
@@ -95,10 +132,17 @@ const Add = () => {
                         <label className="text-muted ml-4">Category</label>
                         <ul style={{ maxHeight: '100px', overflowY: 'scroll' }}>{showCategories()}</ul>
                     </div>
+                    <div className="form-group">
+                        <label className="text-muted ml-4">Type</label>
+                        {showTypes()}
+                    </div>
                 </div>
-                <div className="col-md-8">{submitLinkForm()}</div>
+                <div className="col-md-8">
+                    {success && showSuccessMessage(success)}
+                    {error && showErrorMessage(error)}
+                    {submitLinkForm()}
+                </div>
             </div>
-            {JSON.stringify(categories)}
         </Layout>
     );
 };
