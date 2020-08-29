@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import Layout from '../../../components/Layout';
 import axios from 'axios';
+import { getCookie, isAuthenticated } from '../../../utils/auth';
 import { API } from '../../../config';
 import { showSuccessMessage, showErrorMessage } from '../../../utils/alert';
 
-const Add = () => {
+const Add = ({ token }) => {
     const [state, setState] = useState({
         title: '',
         url: '',
@@ -12,12 +13,42 @@ const Add = () => {
         loadedCategories: [],
         success: '',
         error: '',
-        type: '',
-        medium: ''
+        type: ''
     });
 
-    const { title, url, categories, loadedCategories, success, error, type, medium } = state;
+    const { title, url, categories, loadedCategories, success, error, type } = state;
 
+
+
+    const handleToggle = c => () => {
+        // return the first index or -1
+        const clickedCategory = categories.indexOf(c);
+        const all = [...categories];
+
+        if (clickedCategory === -1) {
+            all.push(c);
+        } else {
+            all.splice(clickedCategory, 1);
+        }
+        console.log('all >> categories', all);
+        setState({ ...state, categories: all, success: '', error: '' });
+    };
+
+    const handleTypeClick = e => {
+        setState({ ...state, type: e.target.value, success: '', error: '' });
+    };
+
+    const handleTitleChange = e => {
+        setState({ ...state, title: e.target.value, error: '', success: '' });
+    };
+
+    const handleURLChange = e => {
+        setState({ ...state, url: e.target.value, error: '', success: '' });
+    };
+    const handleSubmit = e => {
+        e.preventDefault();
+        console.table({ title, url, categories, type })
+    };
     // load categories when component mounts using useEffect
     useEffect(() => {
         loadCategories();
@@ -52,8 +83,8 @@ const Add = () => {
                         className="form-check-input"
                         name="type"
                     />{' '}
-                    Web Page
-                </label>
+                        Web Page
+                    </label>
             </div>
 
             <div className="form-check ml-3">
@@ -66,40 +97,11 @@ const Add = () => {
                         className="form-check-input"
                         name="type"
                     />{' '}
-                    Video
-                </label>
+                        Video
+                    </label>
             </div>
         </React.Fragment>
     );
-
-    const handleToggle = c => () => {
-        // return the first index or -1
-        const clickedCategory = categories.indexOf(c);
-        const all = [...categories];
-
-        if (clickedCategory === -1) {
-            all.push(c);
-        } else {
-            all.splice(clickedCategory, 1);
-        }
-        console.log('all >> categories', all);
-        setState({ ...state, categories: all, success: '', error: '' });
-    };
-
-    const handleTypeClick = e => {
-        setState({ ...state, type: e.target.value, success: '', error: '' });
-    };
-
-    const handleTitleChange = e => {
-        setState({ ...state, title: e.target.value, error: '', success: '' });
-    };
-
-    const handleURLChange = e => {
-        setState({ ...state, url: e.target.value, error: '', success: '' });
-    };
-    const handleSubmit = async e => {
-        console.log('POST to server');
-    };
     const submitLinkForm = () => (
         <form onSubmit={handleSubmit}>
             <div className="form-group">
@@ -111,8 +113,8 @@ const Add = () => {
                 <input type="url" className="form-control" onChange={handleURLChange} value={url} />
             </div>
             <div>
-                <button className="btn btn-outline-warning" type="submit">
-                    Submit
+                <button disabled={!token} className="btn btn-outline-warning" type="submit">
+                    {isAuthenticated() || token ? 'Post' : 'Login to post'}
                 </button>
             </div>
         </form>
@@ -145,6 +147,11 @@ const Add = () => {
             </div>
         </Layout>
     );
+};
+
+Add.getInitialProps = ({ req }) => {
+    const token = getCookie('token', req);
+    return { token };
 };
 
 export default Add;
