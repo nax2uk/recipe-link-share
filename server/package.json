@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "prepare": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "keywords": [],
   "author": "",
@@ -22,12 +24,14 @@
     "mongoose": "^5.9.27",
     "shortid": "^2.2.15",
     "slugify": "^1.4.5",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
     "jest": "^26.2.2",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
-  }
+  },
+  "snyk": true
 }
